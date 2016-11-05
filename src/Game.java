@@ -30,5 +30,5 @@ public class Game extends PApplet {
 	    public void draw(){
 	    	ellipse(width/2,height/2,second(),second());
 	    }
-	/* Hello this is dog */ /*everybody say hello to dog*/
+	/* Hello this is dog */ /*everybody say hello to dog */
 }

@@ -15,13 +15,20 @@ public class Game /*extends PApplet*/ {
 	public static void main(String[] args) {
 		//PApplet.main("Game");
 	//}
-		// TODO Auto-generated method stub
-		JFrame frame = new JFrame(); /* let's kill it anyway */
+		Start 2048 = new Start();
+		
+		JFrame frame = new JFrame(); /* this is a window */
 		frame.setTitle("This bullshit");
-		frame.setVisible(true);
+		frame.setResizable(false);
+		frame.add(jeu); 
+		frame.pack();
+		frame.setLocationRelativeTo(null);
 		frame.setSize(600, 600); 
-		frame.getContentPane().setBackground(new Color(204,216,230));
+		frame.getContentPane().setBackground(new Color(241,241,241));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+		
+		jeu.Game(); //redundant is it not?
 		
 		//FUN STUFF
 		/*public void settings(){

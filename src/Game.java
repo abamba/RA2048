@@ -14,12 +14,12 @@ public class Game extends PApplet {
 	int[][] board = new int[4][4]; 
 	int pad = 10, block = 100; 
 	int length = pad*(board.length+1)+block*board.length; 
-
+	//int score = 0, lose = 0;
 	
 	public static void main(String[] args) {
 		PApplet.main("Game");	
 		
-		Start jeu = new Start();
+		//Start jeu = new Start();
 	}
 		/*Start 2048 = new Start();
 		
@@ -46,15 +46,18 @@ public class Game extends PApplet {
 
     public void setup(){ 
     	size(length, length); //pour le background
-    	//fill(120,50,240); //this tutorial creates ugly shit
+    	//fill(120,50,240); //this tutorial creates ugly shit 
+    	Start jeu = new Start();
+    	textFont(createFont("Calibri", 38));
     }
 
 
     public void draw(){
-	    background(241); 
+	    background(141); 
 	    //rectt(0, 0, width, height, 10, color(150));
 	    //ellipse(width/2,height/2,second(),second());
-
+	    int score = 0, lose = 0;
+	    
     	for(int i = 0; i < board.length; i++)
     	{
     		for(int j = 0; j < board.length; j++)
@@ -67,8 +70,10 @@ public class Game extends PApplet {
         		int b = 180;
         		noStroke();
         		rectangle(x,y,c,c,r,g,b);
+        		
         	}
     	}
+    	texte("score : "+ score, 10, 5, 100, 5, 0, 0, 0, 10, LEFT);
     }
 
     public void rectangle(float x, float y, float w, float h, int r, int g, int b)
@@ -84,5 +89,5 @@ public class Game extends PApplet {
     	text(t,x,y,w,h);
     }
     
-    /* Hello this is dog */ /*everybody say hello to dog*/ /*shoot the dog*/ /* Revive the dog */ /* Revive the dog again */
+    /* Hello this is dog */ /*everybody say hello to dog*/ /*shoot the dog*/ /* Revive the dog */ /*bury the dog*/ /* Revive the dog again */
 }

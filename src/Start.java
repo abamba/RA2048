@@ -4,6 +4,7 @@ public class Start extends Game {
 	int[][] board = new int[4][4]; 
 	int score = 0, lose = 0;
 	
+	//board[0][0] = 1024;
 } 
 
 

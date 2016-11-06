@@ -12,14 +12,12 @@ public class Game extends PApplet {
 	https://processing.org/tutorials/eclipse/
 	*/
 	int[][] board = new int[4][4]; 
-	int pad = 10, block = 100, score = 0, dead = 0; 
+	int pad = 10, block = 100, score = 0, dead = 1; 
 	int length = pad*(board.length+1)+block*board.length; 
-	//int score = 0, lose = 0;
 	
 	public static void main(String[] args) {
 		PApplet.main("Game");	
 		
-		//Start jeu = new Start();
 	}
 		/*Start 2048 = new Start();
 		
@@ -40,13 +38,13 @@ public class Game extends PApplet {
 
 	public void settings(){
 		//size(500, 500);
-		size(length, length);
+		size(length, length+10);
 		//Start();
     }
 
     public void setup(){ 
-    	size(length, length); //pour le background
-    	//fill(120,50,240); //this tutorial creates ugly shit 
+    	size(length, length+10); //pour le background
+    	
     	Start jeu = new Start();
     	textFont(createFont("Calibri", 38));
     }
@@ -61,13 +59,13 @@ public class Game extends PApplet {
     		for(int j = 0; j < board.length; j++)
         	{
         		int x = 10+110*(i); /* On place les carrés sur un certain x */
-        		int y = 10+110*(j); /* On place les carrés sur un certain u */
+        		int y = 20+110*(j); /* On place les carrés sur un certain u */
         		int c = block;		/* Taille du coté des carrés */
-        		float deltaG = (float)-0.014;
-        		float deltaB = (float)-0.055;
-        		float r = 255;
-        		float g = 245 + board[i][j]*deltaG;
-        		float b = 225 + board[i][j]*deltaB;
+        		float deltaG = (float)-0.014; //transition de couleurs de matheux pour faire des dégradés*/
+        		float deltaB = (float)-0.055; //différence entre couleur de début et de fin
+        		float r = 205;
+        		float g = 193 + board[i][j]*deltaG;
+        		float b = 180 + board[i][j]*deltaB;
         		noStroke();
         		int size = 20;
         		rectangle(x,y,c,c,(int)r,(int)g,(int)b);
@@ -97,6 +95,8 @@ public class Game extends PApplet {
         		restart();
         	}
     	}
+    	int size = 30;
+        texte("Score : "+ score,10,0,length,length,100,100,100,(size*2)/3,LEFT);
     }
 
     public void rectangle(float x, float y, float w, float h, int r, int g, int b)

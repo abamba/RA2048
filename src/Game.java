@@ -54,18 +54,34 @@ public class Game extends PApplet {
 	    //rectt(0, 0, width, height, 10, color(150));
 	    //ellipse(width/2,height/2,second(),second());
 	    
-	    for(int i = 0; i < board.length; i++)
+    	for(int i = 0; i < board.length; i++)
     	{
     		for(int j = 0; j < board.length; j++)
         	{
-        		int x = 10+110*(i);
-        		int y = 10+110*(j);
-        		int w = block;
-        		int h = block;
-        		fill(20*i,0,0);
-        		rect(x,y,w,h);
+        		int x = 10+110*(i); /* On place les carrés sur un certain x */
+        		int y = 10+110*(j); /* On place les carrés sur un certain u */
+        		int c = block;		/* Taille du coté des carrés */
+        		int r = 205;
+        		int g = 193;
+        		int b = 180;
+        		noStroke();
+        		rectangle(x,y,c,c,r,g,b);
         	}
     	}
     }
-    /* Hello this is dog */ /*everybody say hello to dog*/ /*shoot the dog*/ 
+
+    public void rectangle(float x, float y, float w, float h, int r, int g, int b)
+    {
+    	fill(r,g,b);
+    	rect(x,y,w,h);
+    }
+    
+    public void texte(String t, float x, float y, float w, float h, int r, int g, int b, float s, int align){
+    	fill(r,g,b);
+    	textAlign(align);
+    	textSize(s);
+    	text(t,x,y,w,h);
+    }
+    
+    /* Hello this is dog */ /*everybody say hello to dog*/ /*shoot the dog*/ /* Revive the dog */ /* Revive the dog again */
 }

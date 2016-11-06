@@ -14,7 +14,6 @@ public class Game extends PApplet {
 	int[][] board = new int[4][4]; 
 	int pad = 10, block = 100, score = 0, dead = 0; 
 	int length = pad*(board.length+1)+block*board.length; 
-	//int score = 0, lose = 0;
 	
 	public static void main(String[] args) {
 		PApplet.main("Game");	
@@ -55,7 +54,8 @@ public class Game extends PApplet {
     public void draw(){
     	background(241);
     	board[1][1]=8192;
-    	board[2][3]=64;
+    	board[2][3]=4096;
+    	board[0][0]=2;
     	for(int i = 0; i < board.length; i++)
     	{
     		for(int j = 0; j < board.length; j++)
@@ -63,27 +63,31 @@ public class Game extends PApplet {
         		int x = 10+110*(i); /* On place les carrés sur un certain x */
         		int y = 10+110*(j); /* On place les carrés sur un certain u */
         		int c = block;		/* Taille du coté des carrés */
-        		float deltaG = (float)-0.014;
-        		float deltaB = (float)-0.055;
-        		float r = 255;
-        		float g = 245 + board[i][j]*deltaG;
-        		float b = 225 + board[i][j]*deltaB;
+        		float deltaG = (float)(197-228)/4096;
+        		float deltaB = (float)(1-218)/4096;
+        		float r = 238;
+        		float g = 228 + board[i][j]*deltaG;
+        		float b = 218 + board[i][j]*deltaB;
         		noStroke();
-        		int size = 20;
-        		rectangle(x,y,c,c,(int)r,(int)g,(int)b);
+        		int size = 40;
         		if(board[i][j]!=0){
         			if(board[i][j]>4096){
             			r = 0;
             			g = 0;
             			b = 0;
             			rectangle(x,y,c,c,(int)r,(int)g,(int)b);
-            			texte(""+ board[i][j],x,y+55-(size*2)/3,c,c,255,255,255,(size*2)/3,CENTER);
+            			texte(""+ board[i][j],x,y+60-(size*2)/3,c,c,255,255,255,(size*2)/3,CENTER);
             		}
         			else{
-        				texte(""+ board[i][j],x,y+55-(size*2)/3,c,c,100,100,100,(size*2)/3,CENTER);
+        				rectangle(x,y,c,c,(int)r,(int)g,(int)b);
+        				texte(""+ board[i][j],x,y+60-(size*2)/3,c,c,100,100,100,(size*2)/3,CENTER);
         			}
         		}
+        		else{
+        			rectangle(x,y,c,c,205,193,180);
+        		}
         	}
+
     	}
     	
     	if(dead==1){
@@ -97,6 +101,8 @@ public class Game extends PApplet {
         		restart();
         	}
     	}
+    	int size = 15;
+		texte("Score : "+ score,10,0,length,length,100,100,100,(size*2)/3,LEFT);
     }
 
     public void rectangle(float x, float y, float w, float h, int r, int g, int b)

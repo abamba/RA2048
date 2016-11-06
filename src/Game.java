@@ -40,7 +40,7 @@ public class Game extends PApplet {
     }
     
     public void restart(){
-    	//TEST
+    	//TEST pour si jamais on se sent chauds
     	/*Scanner taille = new Scanner(System.in); 
     	int in = taille.nextInt(); // Scans the next token of the input as an int.
     	

@@ -1,3 +1,17 @@
+/*import processing.core.PApplet; */
+
+public class Start extends Game {
+	int[][] board = new int[4][4]; 
+	int score = 0, lose = 0;
+	
+} 
+
+
+
+
+
+
+
 /*import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;

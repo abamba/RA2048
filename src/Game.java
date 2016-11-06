@@ -11,9 +11,15 @@ public class Game extends PApplet {
 	
 	https://processing.org/tutorials/eclipse/
 	*/
+	int[][] board = new int[4][4]; 
+	int pad = 10, block = 100; 
+	int length = pad*(board.length+1)+block*board.length; 
+
 	
 	public static void main(String[] args) {
-		PApplet.main("Game");
+		PApplet.main("Game");	
+		
+		Start jeu = new Start();
 	}
 		/*Start 2048 = new Start();
 		
@@ -32,17 +38,24 @@ public class Game extends PApplet {
 		
 		//FUN STUFF
 		public void settings(){
-			size(600,600);
+			//size(500, 500);
+			size(length, length);
+			//Start();
 	    }
 
 	    public void setup(){ 
-	    	fill(120,50,240); //this tutorial creates ugly shit
+	    	size(length, length); //pour le background
+	    	//fill(120,50,240); //this tutorial creates ugly shit
 	    }
 
 	    public void draw(){
-	    	ellipse(width/2,height/2,second(),second());
-	    	background(241);
+	    	background(241); 
+	    	//rectt(0, 0, width, height, 10, color(150));
+	    	//ellipse(width/2,height/2,second(),second());
+	    	
 	    }
-	
+	    /*public void rectt(float x, float y, float w, float h, float r, color c){
+	    	
+	    }*/
 		/* Hello this is dog */ /*everybody say hello to dog*/ /*shoot the dog*/ 
 }

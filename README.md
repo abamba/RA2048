@@ -1,5 +1,8 @@
 # RA2048
 
+It's like watching shite dry
+
+
 Git, a poem /
 you push, i have to overwrite, /
 there's no trace of your work left /

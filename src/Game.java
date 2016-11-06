@@ -12,7 +12,7 @@ public class Game extends PApplet {
 	https://processing.org/tutorials/eclipse/
 	*/
 	int[][] board = new int[4][4]; 
-	int pad = 10, block = 100; 
+	int pad = 10, block = 100, score = 0, dead = 0; 
 	int length = pad*(board.length+1)+block*board.length; 
 	//int score = 0, lose = 0;
 	

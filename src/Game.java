@@ -15,6 +15,7 @@ public class Game extends PApplet {
 	int pad = 10, block = 100; 
 	int length = pad*(board.length+1)+block*board.length; 
 
+	
 	public static void main(String[] args) {
 		PApplet.main("Game");	
 		

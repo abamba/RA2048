@@ -7,7 +7,10 @@ public class Game /*extends PApplet*/ {
 
 	/*NOTE: If your class is part of a package other than the default package, you must call PApplet's main using the package name as well, like this:
 
-	PApplet.main("packageName.ClassName");*/
+	PApplet.main("packageName.ClassName");
+	
+	https://processing.org/tutorials/eclipse/
+	*/
 	
 	public static void main(String[] args) {
 		//PApplet.main("Game");

@@ -53,11 +53,9 @@ public class Game extends PApplet {
 
 
     public void draw(){
-	    background(141); 
-	    //rectt(0, 0, width, height, 10, color(150));
-	    //ellipse(width/2,height/2,second(),second());
-	    int score = 0, lose = 0;
-	    
+    	background(241);
+    	board[1][1]=8192;
+    	board[2][3]=64;
     	for(int i = 0; i < board.length; i++)
     	{
     		for(int j = 0; j < board.length; j++)
@@ -65,15 +63,40 @@ public class Game extends PApplet {
         		int x = 10+110*(i); /* On place les carrés sur un certain x */
         		int y = 10+110*(j); /* On place les carrés sur un certain u */
         		int c = block;		/* Taille du coté des carrés */
-        		int r = 205;
-        		int g = 193;
-        		int b = 180;
+        		float deltaG = (float)-0.014;
+        		float deltaB = (float)-0.055;
+        		float r = 255;
+        		float g = 245 + board[i][j]*deltaG;
+        		float b = 225 + board[i][j]*deltaB;
         		noStroke();
-        		rectangle(x,y,c,c,r,g,b);
-        		
+        		int size = 20;
+        		rectangle(x,y,c,c,(int)r,(int)g,(int)b);
+        		if(board[i][j]!=0){
+        			if(board[i][j]>4096){
+            			r = 0;
+            			g = 0;
+            			b = 0;
+            			rectangle(x,y,c,c,(int)r,(int)g,(int)b);
+            			texte(""+ board[i][j],x,y+55-(size*2)/3,c,c,255,255,255,(size*2)/3,CENTER);
+            		}
+        			else{
+        				texte(""+ board[i][j],x,y+55-(size*2)/3,c,c,100,100,100,(size*2)/3,CENTER);
+        			}
+        		}
         	}
     	}
-    	texte("score : "+ score, 10, 5, 100, 5, 0, 0, 0, 10, LEFT);
+    	
+    	if(dead==1){
+    		fill(color(255,135));
+    		rect(0,0,length,length);
+    		int size = 20;
+    		texte("En tant que personne nulle, vous êtes morte.",0,(length)/2-(size*2)/3,length,length,100,100,100,size,CENTER);
+    		texte("Cliquez pour rejouer",0,(length)/2+size,length,length,100,100,100,(size*2)/3,CENTER);
+    		texte("Score de fin : "+ score,0,(length)/2+2*size,length,length,100,100,100,(size*2)/3,CENTER);
+    		if(mousePressed){
+        		restart();
+        	}
+    	}
     }
 
     public void rectangle(float x, float y, float w, float h, int r, int g, int b)
@@ -89,5 +112,9 @@ public class Game extends PApplet {
     	text(t,x,y,w,h);
     }
     
-    /* Hello this is dog */ /*everybody say hello to dog*/ /*shoot the dog*/ /* Revive the dog */ /*bury the dog*/ /* Revive the dog again */
+    public void restart(){
+    	int size = 20;
+    	texte("Score de fin : "+ score,0,(length)/2+3*size,length,length,100,100,100,(size*2)/3,CENTER);
+    }
+    /* Hello this is dog */ /*everybody say hello to dog*/ /*shoot the dog*/ /* Revive the dog */ /* Revive the dog again */
 }

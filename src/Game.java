@@ -12,12 +12,12 @@ public class Game extends PApplet {
 	https://processing.org/tutorials/eclipse/
 	*/
 	int[][] board = new int[4][4]; 
-	int pad = 10, block = 100, score = 0, dead = 1; 
+	int boo=0;
+	int pad = 10, block = 100, score = 0, dead = 0; 
 	int length = pad*(board.length+1)+block*board.length; 
 	
 	public static void main(String[] args) {
 		PApplet.main("Game");	
-		
 	}
 		/*Start 2048 = new Start();
 		
@@ -52,9 +52,12 @@ public class Game extends PApplet {
 
     public void draw(){
     	background(241);
-    	board[1][1]=8192;
-    	board[2][3]=4096;
-    	board[0][0]=2;
+    	if(boo==0)
+    	{
+    		board[3][3]=2;
+    		board[1][3]=2;
+    		boo=1;
+    	}
     	for(int i = 0; i < board.length; i++)
     	{
     		for(int j = 0; j < board.length; j++)
@@ -125,5 +128,142 @@ public class Game extends PApplet {
     	int size = 20;
     	texte("Score de fin : "+ score,0,(length)/2+3*size,length,length,100,100,100,(size*2)/3,CENTER);
     }
+    
+    public void keyPressed(){
+    	if(dead==0){
+    		if(keyPressed){
+    			int test = 0;	// 1 = mouvement possible. 0 = mouvement impossible.
+    			int i, j;
+    			switch (keyCode)
+    			{
+    				case 37:	// Left - On teste tous les mouvements de droite à gauche
+    					for(i = board.length-1; i > 0; i--){
+    						for (j = 0; j < 4; j++){
+    							if(board[i][j]==board[i-1][j]&&board[i][j]!=0)	// Si on peut fusionner deux cases
+    								test=1;
+    							if(board[i][j]!=0&&board[i-1][j]==0)	// Si on peut bouger car il y a une case vide
+    								test=1;
+    						}
+    					}
+    					if(test==1)
+    					{
+    						KeyMove("left");
+    					}
+					break;
+					
+    			  case 38:	// Up - On teste tous les mouvements de bas en haut
+  					for(j = board.length-1; j > 0; j--){
+						for (i = 0; i < 4; i++){
+							if(board[i][j]==board[i][j-1]&&board[i][j]!=0)	// Si on peut fusionner deux cases
+								test=1;
+							if(board[i][j]!=0&&board[i][j-1]==0)	// Si on peut bouger car il y a une case vide
+								test=1;
+						}
+					}
+					if(test==1)
+					{
+						KeyMove("up");
+					}
+    			    break;
+    			    
+    			  case 39:	// Right - On teste tous les mouvements de gauche à droite
+  					for(i = 0; i < board.length-1; i++){
+						for (j = 0; j < 4; j++){
+							if(board[i][j]==board[i+1][j]&&board[i][j]!=0)	// Si on peut fusionner deux cases
+								test=1;
+							if(board[i][j]!=0&&board[i+1][j]==0)	// Si on peut bouger car il y a une case vide
+								test=1;
+						}
+					}
+					if(test==1)
+					{
+						KeyMove("right");
+					}
+    			    break;
+    			    
+    			  case 40:	// Down - On teste tous les mouvements de haut en bas
+    				  for(j = 0; j < board.length-1; j++){
+  						for (i = 0; i < 4; i++){
+  							if(board[i][j]==board[i][j+1]&&board[i][j]!=0)	// Si on peut fusionner deux cases
+  								test=1;
+  							if(board[i][j]!=0&&board[i][j+1]==0)	// Si on peut bouger car il y a une case vide
+  								test=1;
+  						}
+  					}
+  					if(test==1)
+  					{
+  						KeyMove("down");
+  					}
+      			    break;
+    			  default:
+    			    System.out.println("Dude what you're so buffed up right now");
+    			}
+    		}
+    	}
+    }
+    
+    public void KeyMove(String s){
+    	int i,j,k,sauve;
+    	switch(s)
+    	{
+	    	case "left":
+	    		for (k = 0; k<board.length;k++){
+		    		for(i = board.length-1; i > 0; i--){
+						for (j = 0; j < 4; j++){
+							if(board[i-1][j]==0)
+							{
+								board[i-1][j]=board[i][j];
+								board[i][j]=0;
+							}
+						}
+					}
+	    		}
+	    	break;
+	    	
+	    	case "up":
+	    		for (k = 0; k<board.length;k++){
+		    		for(j = board.length-1; j > 0; j--){
+						for (i = 0; i < 4; i++){
+							if(board[i][j-1]==0)
+							{
+								board[i][j-1]=board[i][j];
+								board[i][j]=0;
+							}
+						}
+					}
+	    		}
+	    	break;
+	    	
+	    	case "right":
+	    		for (k = 0; k<board.length;k++){
+		    		for(i = 0; i < board.length-1; i++){
+						for (j = 0; j < 4; j++){
+							if(board[i+1][j]==0)
+							{
+								board[i+1][j]=board[i][j];
+								board[i][j]=0;
+							}
+						}
+		    		}
+	    		}
+    		break;
+	    	
+	    	case "down":
+	    		for (k = 0; k<board.length;k++){
+		    		for(j = 0; j < board.length-1; j++){
+							for (i = 0; i < 4; i++){
+								if(board[i][j+1]==0)
+								{
+									board[i][j+1]=board[i][j];
+									board[i][j]=0;
+								}
+							}
+						}
+	    		}
+	    	break;
+    	}
+    	draw();
+    }
+    
     /* Hello this is dog */ /*everybody say hello to dog*/ /*shoot the dog*/ /* Revive the dog */ /* Revive the dog again */
 }

@@ -16,8 +16,6 @@ public class Game extends PApplet {
 	
 	int[][] board = new int[4][4]; 
 
-	int boo=0;
-
 	int pad = 10, block = 100, score = 0, dead = 0; 
 	int length = pad*(board.length+1)+block*board.length; 
 	
@@ -48,6 +46,7 @@ public class Game extends PApplet {
     	int[][] board = new int[4][4]; 
     	int score = 0, dead = 0;
     	spawn();
+    	spawn();
     }
     
     public void spawn(){
@@ -68,13 +67,6 @@ public class Game extends PApplet {
 
     public void draw(){
     	background(241);
-
-    	if(boo==0)
-    	{
-    		board[3][3]=2;
-    		board[1][3]=2;
-    		boo=1;
-    	}
 
     	for(int i = 0; i < board.length; i++)
     	{
@@ -228,6 +220,11 @@ public class Game extends PApplet {
 								board[i-1][j]=board[i][j];
 								board[i][j]=0;
 							}
+							if(board[i-1][j]==board[i][j])
+							{
+								board[i-1][j]=2*board[i-1][j];
+								board[i][j]=0;
+							}
 						}
 					}
 	    		}
@@ -240,6 +237,11 @@ public class Game extends PApplet {
 							if(board[i][j-1]==0)
 							{
 								board[i][j-1]=board[i][j];
+								board[i][j]=0;
+							}
+							if(board[i][j-1]==board[i][j])
+							{
+								board[i][j-1]=2*board[i][j-1];
 								board[i][j]=0;
 							}
 						}
@@ -256,6 +258,11 @@ public class Game extends PApplet {
 								board[i+1][j]=board[i][j];
 								board[i][j]=0;
 							}
+							if(board[i+1][j]==board[i][j])
+							{
+								board[i+1][j]=2*board[i+1][j];
+								board[i][j]=0;
+							}
 						}
 		    		}
 	    		}
@@ -270,11 +277,17 @@ public class Game extends PApplet {
 									board[i][j+1]=board[i][j];
 									board[i][j]=0;
 								}
+								if(board[i][j+1]==board[i][j])
+								{
+									board[i][j+1]=2*board[i][j+1];
+									board[i][j]=0;
+								}
 							}
 						}
 	    		}
 	    	break;
     	}
+    	spawn();
     	draw();
     }
     

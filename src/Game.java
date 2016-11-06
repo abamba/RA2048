@@ -35,13 +35,14 @@ public class Game extends PApplet {
 			size(600,600);
 	    }
 
-	    public void setup(){
+	    public void setup(){ 
 	    	fill(120,50,240); //this tutorial creates ugly shit
 	    }
 
 	    public void draw(){
 	    	ellipse(width/2,height/2,second(),second());
+	    	background(241);
 	    }
 	
-		/* Hello this is dog */ /*everybody say hello to dog */
+		/* Hello this is dog */ /*everybody say hello to dog*/ /*shoot the dog*/ 
 }

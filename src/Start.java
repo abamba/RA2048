@@ -1,4 +1,4 @@
-import java.awt.Color;
+/*import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -21,7 +21,7 @@ public class Start extends JPanel implements KeyListener, Runnable {
 	private BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
 	/*the fuck is you*/
-	private static final long serialVersionUID = 1L;
+	/*private static final long serialVersionUID = 1L;
 	
 	//keep track of time
 	private long startTime; 
@@ -65,4 +65,4 @@ public class Start extends JPanel implements KeyListener, Runnable {
 	public void keyTyped(KeyEvent e) {
 		
 	}
-}
+}*/

@@ -6,12 +6,16 @@ import java.awt.*;
 public class Game extends PApplet {
 
 	/*NOTE: If your class is part of a package other than the default package, you must call PApplet's main using the package name as well, like this:
-
+	
 	PApplet.main("packageName.ClassName");
 	
 	https://processing.org/tutorials/eclipse/
 	*/
-	
+	int[][] board = new int[4][4]; 
+	int pad = 10, block = 100; 
+	int length = pad*(board.length+1)+block*board.length; 
+	int score = 0, lose = 0;
+
 	public static void main(String[] args) {
 		PApplet.main("Game");
 	}
@@ -31,18 +35,35 @@ public class Game extends PApplet {
 		jeu.Game(); //redundant is it not?*/
 		
 		//FUN STUFF
-		public void settings(){
-			size(600,600);
-	    }
+	public void settings(){
+		//size(500, 500);
+		size(length, length);
+		//Start();
+    }
 
-	    public void setup(){ 
-	    	fill(120,50,240); //this tutorial creates ugly shit
-	    }
+    public void setup(){ 
+    	size(length, length); //pour le background
+    	//fill(120,50,240); //this tutorial creates ugly shit
+    }
 
-	    public void draw(){
-	    	ellipse(width/2,height/2,second(),second());
-	    	background(241);
-	    }
-	
-		/* Hello this is dog */ /*everybody say hello to dog*/ /*shoot the dog*/ 
+    public void draw(){
+    	background(241);
+    	//ellipse(width/2,height/2,second(),second());
+    	
+    	for(int i = 0; i < board.length; i++)
+    	{
+    		for(int j = 0; j < board.length; j++)
+        	{
+        		int x = 10+110*(i);
+        		int y = 10+110*(j);
+        		int w = block;
+        		int h = block;
+        		fill(20*i,0,0);
+        		rect(x,y,w,h);
+        	}
+    	}
+
+    }
+
+    /* Hello this is dog */ /*everybody say hello to dog*/ /*shoot the dog*/ 
 }

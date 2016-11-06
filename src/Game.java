@@ -49,11 +49,12 @@ public class Game extends PApplet {
     	//fill(120,50,240); //this tutorial creates ugly shit
     }
 
+
     public void draw(){
 	    background(241); 
 	    //rectt(0, 0, width, height, 10, color(150));
 	    //ellipse(width/2,height/2,second(),second());
-	    
+
     	for(int i = 0; i < board.length; i++)
     	{
     		for(int j = 0; j < board.length; j++)

@@ -107,7 +107,7 @@ public class Game extends PApplet {
     	
     	if(dead==1){
     		fill(color(255,135));
-    		rect(0,0,length,length);
+    		rect(0,0,length+20,length+20);
     		int size = 20;
     		texte("En tant que personne nulle, vous êtes morte.",0,(length)/2-(size*2)/3,length,length,100,100,100,size,CENTER);
     		texte("Cliquez pour rejouer",0,(length)/2+size,length,length,100,100,100,(size*2)/3,CENTER);

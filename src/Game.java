@@ -5,8 +5,8 @@ import java.util.Scanner;
 
 public class Game extends PApplet {
 	int[][] board = new int[4][4]; 
-	int boo=0;
-	int pad = 10, block = 100, score = 0, dead = 0; 
+	int pad = 10, block = 100, score = 0, hiscore = 0, dead = 0; 
+
 	int length = pad*(board.length+1)+block*board.length; 
 	
 	public static void main(String[] args) {
@@ -30,8 +30,10 @@ public class Game extends PApplet {
     	int in = taille.nextInt(); // Scans the next token of the input as an int.
     	texte("Taille du 2048 : ",0,(length)/2+2*size,length,length,100,100,100,(size*2)/3,CENTER);
     	int[][] board = new int[in][in]; */
-    	int[][] board = new int[4][4]; 
-    	int score = 0, dead = 0;
+    	board = new int[4][4]; 
+    	score = 0;
+    	dead = 0;
+    	spawn();
     	spawn();
     }
     
@@ -60,13 +62,13 @@ public class Game extends PApplet {
         		int x = 10+110*(i); /* On place les carrés sur un certain x */
         		int y = 25+110*(j); /* On place les carrés sur un certain y */
         		int c = block;		/* Taille du coté des carrés */
-
-        		float deltaG = (float)(197-228)/4096; //transition de couleurs de matheux pour faire des dégradés
-        		float deltaB = (float)(1-218)/4096; //différence entre couleur de début et de fin
+        		
+        		float deltaG = (float)(197-228)/12; //transition de couleurs de matheux pour faire des dégradés
+        		float deltaB = (float)(1-218)/12; //différence entre couleur de début et de fin
         		float r = 238;
         		float g = 228 + board[i][j]*deltaG;
         		float b = 218 + board[i][j]*deltaB;
-
+        		
         		noStroke();
         		int size = 40;
         		if(board[i][j]!=0){ //mettre à noir au delà de 4096 et texte en blanc
@@ -90,7 +92,7 @@ public class Game extends PApplet {
     	//en cas de décès
     	if(dead==1){ 
     		fill(color(255,135));
-    		rect(0,0,length,length);
+    		rect(0,0,length+20,length+20);
     		int size = 20;
     		texte("En tant que personne nulle, vous êtes morte.",0,(length)/2-(size*2)/3,length,length,100,100,100,size,CENTER);
     		texte("Cliquez pour rejouer",0,(length)/2+size,length,length,100,100,100,(size*2)/3,CENTER);
@@ -101,6 +103,7 @@ public class Game extends PApplet {
     	}
     	int size = 30;
         texte("Score : "+ score,10,0,length,length,100,100,100,(size*2)/3,LEFT);
+        texte("High-Score : "+ hiscore,-10,0,length,length,100,100,100,(size*2)/3,RIGHT);
     }
 
     public void rectangle(float x, float y, float w, float h, int r, int g, int b)
@@ -190,17 +193,28 @@ public class Game extends PApplet {
     }
     //déplacement
     public void KeyMove(String s){
-    	int i,j,k,sauve;
+    	int i,j,k;
+    	int[][] tabtest = new int[4][4];
+    	for(i = 0; i == tabtest.length ; i++)
+    		for(j = 0; j == tabtest.length ; j++)
+    			tabtest[i][j]=0;
     	switch(s)
     	{
 	    	case "left":
 	    		for (k = 0; k<board.length;k++){
-		    		for(i = board.length-1; i > 0; i--){
+		    		for(i = 1; i < board.length; i++){
 						for (j = 0; j < 4; j++){
 							if(board[i-1][j]==0)
 							{
 								board[i-1][j]=board[i][j];
 								board[i][j]=0;
+							}
+							if(board[i-1][j]==board[i][j]&&tabtest[i-1][j]!=1&&tabtest[i][j]!=1)
+							{
+								board[i-1][j]=2*board[i-1][j];
+								board[i][j]=0;
+								tabtest[i-1][j]=1;
+								score = score+board[i-1][j];
 							}
 						}
 					}
@@ -208,48 +222,114 @@ public class Game extends PApplet {
 	    	break;
 	    	
 	    	case "up":
-	    		for (k = 0; k<board.length;k++){
-		    		for(j = board.length-1; j > 0; j--){
-						for (i = 0; i < 4; i++){
-							if(board[i][j-1]==0)
+	    		for (k = 0; k < board.length;k++){
+	    			for(j = 0; j < board.length-1; j++){
+  						for (i = 0; i < 4; i++){
+  							if(board[i][j]==0)
 							{
-								board[i][j-1]=board[i][j];
-								board[i][j]=0;
+								board[i][j]=board[i][j+1];
+								board[i][j+1]=0;
 							}
-						}
-					}
+  							if(board[i][j]==board[i][j+1]&&tabtest[i][j]!=1&&tabtest[i][j+1]!=1)
+							{
+								board[i][j]=2*board[i][j];
+								board[i][j+1]=0;
+								tabtest[i][j]=1;
+								score = score+board[i][j];
+							}
+  						}
+  					}
 	    		}
 	    	break;
 	    	
 	    	case "right":
 	    		for (k = 0; k<board.length;k++){
-		    		for(i = 0; i < board.length-1; i++){
+	    			for(i = board.length-1; i > 0; i--){
 						for (j = 0; j < 4; j++){
-							if(board[i+1][j]==0)
+							if(board[i][j]==0)
 							{
-								board[i+1][j]=board[i][j];
-								board[i][j]=0;
+								board[i][j]=board[i-1][j];
+								board[i-1][j]=0;
+							}
+							if(board[i][j]==board[i-1][j]&&tabtest[i][j]!=1&&tabtest[i-1][j]!=1)
+							{
+								board[i][j]=2*board[i][j];
+								board[i-1][j]=0;
+								tabtest[i][j]=1;
+								score = score+board[i][j];
 							}
 						}
-		    		}
+					}
 	    		}
     		break;
 	    	
 	    	case "down":
 	    		for (k = 0; k<board.length;k++){
-		    		for(j = 0; j < board.length-1; j++){
-							for (i = 0; i < 4; i++){
-								if(board[i][j+1]==0)
-								{
-									board[i][j+1]=board[i][j];
-									board[i][j]=0;
-								}
+	    			for(j = board.length-1; j > 0; j--){
+						for (i = 0; i < 4; i++){
+							if(board[i][j]==0)
+							{
+								board[i][j]=board[i][j-1];
+								board[i][j-1]=0;
+							}
+							if(board[i][j]==board[i][j-1]&&tabtest[i][j]!=1&&tabtest[i][j-1]!=1)
+							{
+								board[i][j]=2*board[i][j];
+								board[i][j-1]=0;
+								tabtest[i][j]=1;
+								score = score+board[i][j];
 							}
 						}
+					}
 	    		}
 	    	break;
     	}
+    	spawn();
     	draw();
-    }  
+    	deadornay();
+    	if(hiscore<score)
+    		hiscore=score;
+    }
+    
+    public void deadornay(){
+    	int test = 0;	// 1 = mouvement possible. 0 = mouvement impossible.
+		int i, j;
+			for(i = board.length-1; i > 0; i--){
+				for (j = 0; j < 4; j++){
+					if(board[i][j]==board[i-1][j]&&board[i][j]!=0)	// Si on peut fusionner deux cases
+						test=1;
+					if(board[i][j]!=0&&board[i-1][j]==0)	// Si on peut bouger car il y a une case vide
+						test=1;
+				}
+			}
+			for(j = board.length-1; j > 0; j--){
+			for (i = 0; i < 4; i++){
+				if(board[i][j]==board[i][j-1]&&board[i][j]!=0)	// Si on peut fusionner deux cases
+					test=1;
+				if(board[i][j]!=0&&board[i][j-1]==0)	// Si on peut bouger car il y a une case vide
+					test=1;
+			}
+		}
+			for(i = 0; i < board.length-1; i++){
+			for (j = 0; j < 4; j++){
+				if(board[i][j]==board[i+1][j]&&board[i][j]!=0)	// Si on peut fusionner deux cases
+					test=1;
+				if(board[i][j]!=0&&board[i+1][j]==0)	// Si on peut bouger car il y a une case vide
+					test=1;
+			}
+		}
+		  for(j = 0; j < board.length-1; j++){
+				for (i = 0; i < 4; i++){
+					if(board[i][j]==board[i][j+1]&&board[i][j]!=0)	// Si on peut fusionner deux cases
+						test=1;
+					if(board[i][j]!=0&&board[i][j+1]==0)	// Si on peut bouger car il y a une case vide
+						test=1;
+				}
+			}
+    	if(test==0){
+    		dead=1;
+    	}
+    }
+    
     /* Hello this is dog */ /*everybody say hello to dog*/ /*shoot the dog*/ /* Revive the dog */ /*bury the dog*/ /* Revive the dog again */
 }

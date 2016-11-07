@@ -1,6 +1,5 @@
 import processing.core.PApplet;
 import java.util.ArrayList;
-import java.util.Scanner;
 //https://processing.org/tutorials/eclipse/
 
 public class Game extends PApplet {
@@ -24,12 +23,6 @@ public class Game extends PApplet {
     }
     
     public void restart(){
-    	//TEST pour si jamais on se sent chauds
-    	/*System.out.println("Choisir la taille du jeu : "); 
-    	Scanner taille = new Scanner(System.in); 
-    	int in = taille.nextInt(); // Scans the next token of the input as an int.
-    	texte("Taille du 2048 : ",0,(length)/2+2*size,length,length,100,100,100,(size*2)/3,CENTER);
-    	int[][] board = new int[in][in]; */
     	board = new int[4][4]; 
     	score = 0;
     	dead = 0;

@@ -1,32 +1,18 @@
-import javax.swing.*;
 import processing.core.PApplet;
-import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.awt.*; 
+//https://processing.org/tutorials/eclipse/
 
 public class Game extends PApplet {
-
-	/*NOTE: If your class is part of a package other than the default package, you must call PApplet's main using the package name as well, like this:
-	
-	PApplet.main("packageName.ClassName");
-	
-	https://processing.org/tutorials/eclipse/
-	*/
-	
 	int[][] board = new int[4][4]; 
-
 	int boo=0;
-
 	int pad = 10, block = 100, score = 0, dead = 0; 
 	int length = pad*(board.length+1)+block*board.length; 
 	
 	public static void main(String[] args) {
-		PApplet.main("Game"); 
-		
+		PApplet.main("Game"); 		
 	}		
 	//FUN STUFF
-
 	public void settings(){
 		size(length, length+15);
     }
@@ -34,16 +20,15 @@ public class Game extends PApplet {
     public void setup(){ 
     	size(length, length+15); //besoin des deux envie de pizza
     	textFont(createFont("Calibri", 38));
-    	System.out.println("Choisir la taille du jeu : "); 
-    	
     	restart();
     }
     
     public void restart(){
     	//TEST pour si jamais on se sent chauds
-    	/*Scanner taille = new Scanner(System.in); 
+    	/*System.out.println("Choisir la taille du jeu : "); 
+    	Scanner taille = new Scanner(System.in); 
     	int in = taille.nextInt(); // Scans the next token of the input as an int.
-    	
+    	texte("Taille du 2048 : ",0,(length)/2+2*size,length,length,100,100,100,(size*2)/3,CENTER);
     	int[][] board = new int[in][in]; */
     	int[][] board = new int[4][4]; 
     	int score = 0, dead = 0;
@@ -68,20 +53,12 @@ public class Game extends PApplet {
 
     public void draw(){
     	background(241);
-
-    	if(boo==0)
-    	{
-    		board[3][3]=2;
-    		board[1][3]=2;
-    		boo=1;
-    	}
-
     	for(int i = 0; i < board.length; i++)
     	{
     		for(int j = 0; j < board.length; j++)
         	{
         		int x = 10+110*(i); /* On place les carrés sur un certain x */
-        		int y = 25+110*(j); /* On place les carrés sur un certain u */
+        		int y = 25+110*(j); /* On place les carrés sur un certain y */
         		int c = block;		/* Taille du coté des carrés */
 
         		float deltaG = (float)(197-228)/4096; //transition de couleurs de matheux pour faire des dégradés
@@ -92,7 +69,7 @@ public class Game extends PApplet {
 
         		noStroke();
         		int size = 40;
-        		if(board[i][j]!=0){
+        		if(board[i][j]!=0){ //mettre à noir au delà de 4096 et texte en blanc
         			if(board[i][j]>4096){
             			r = 0;
             			g = 0;
@@ -109,10 +86,9 @@ public class Game extends PApplet {
         			rectangle(x,y,c,c,205,193,180);
         		}
         	}
-
     	}
-    	
-    	if(dead==1){
+    	//en cas de décès
+    	if(dead==1){ 
     		fill(color(255,135));
     		rect(0,0,length,length);
     		int size = 20;
@@ -123,10 +99,8 @@ public class Game extends PApplet {
     			restart();
         	}
     	}
-
     	int size = 30;
         texte("Score : "+ score,10,0,length,length,100,100,100,(size*2)/3,LEFT);
-
     }
 
     public void rectangle(float x, float y, float w, float h, int r, int g, int b)
@@ -214,7 +188,7 @@ public class Game extends PApplet {
     		}
     	}
     }
-    
+    //déplacement
     public void KeyMove(String s){
     	int i,j,k,sauve;
     	switch(s)
@@ -276,8 +250,6 @@ public class Game extends PApplet {
 	    	break;
     	}
     	draw();
-    }
-    
+    }  
     /* Hello this is dog */ /*everybody say hello to dog*/ /*shoot the dog*/ /* Revive the dog */ /*bury the dog*/ /* Revive the dog again */
-
 }

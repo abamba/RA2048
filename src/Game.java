@@ -43,8 +43,9 @@ public class Game extends PApplet {
     	int in = taille.nextInt(); // Scans the next token of the input as an int.
     	
     	int[][] board = new int[in][in]; */
-    	int[][] board = new int[4][4]; 
-    	int score = 0, dead = 0;
+    	board = new int[4][4]; 
+    	score = 0;
+    	dead = 0;
     	spawn();
     	spawn();
     }
@@ -209,7 +210,7 @@ public class Game extends PApplet {
     }
     
     public void KeyMove(String s){
-    	int i,j,k,sauve;
+    	int i,j,k;
     	int[][] tabtest = new int[4][4];
     	for(i = 0; i == tabtest.length ; i++)
     		for(j = 0; j == tabtest.length ; j++)
@@ -302,8 +303,49 @@ public class Game extends PApplet {
     	}
     	spawn();
     	draw();
+    	deadornay();
     	if(hiscore<score)
     		hiscore=score;
+    }
+    
+    public void deadornay(){
+    	int test = 0;	// 1 = mouvement possible. 0 = mouvement impossible.
+		int i, j;
+			for(i = board.length-1; i > 0; i--){
+				for (j = 0; j < 4; j++){
+					if(board[i][j]==board[i-1][j]&&board[i][j]!=0)	// Si on peut fusionner deux cases
+						test=1;
+					if(board[i][j]!=0&&board[i-1][j]==0)	// Si on peut bouger car il y a une case vide
+						test=1;
+				}
+			}
+			for(j = board.length-1; j > 0; j--){
+			for (i = 0; i < 4; i++){
+				if(board[i][j]==board[i][j-1]&&board[i][j]!=0)	// Si on peut fusionner deux cases
+					test=1;
+				if(board[i][j]!=0&&board[i][j-1]==0)	// Si on peut bouger car il y a une case vide
+					test=1;
+			}
+		}
+			for(i = 0; i < board.length-1; i++){
+			for (j = 0; j < 4; j++){
+				if(board[i][j]==board[i+1][j]&&board[i][j]!=0)	// Si on peut fusionner deux cases
+					test=1;
+				if(board[i][j]!=0&&board[i+1][j]==0)	// Si on peut bouger car il y a une case vide
+					test=1;
+			}
+		}
+		  for(j = 0; j < board.length-1; j++){
+				for (i = 0; i < 4; i++){
+					if(board[i][j]==board[i][j+1]&&board[i][j]!=0)	// Si on peut fusionner deux cases
+						test=1;
+					if(board[i][j]!=0&&board[i][j+1]==0)	// Si on peut bouger car il y a une case vide
+						test=1;
+				}
+			}
+    	if(test==0){
+    		dead=1;
+    	}
     }
     
     /* Hello this is dog */ /*everybody say hello to dog*/ /*shoot the dog*/ /* Revive the dog */ /*bury the dog*/ /* Revive the dog again */

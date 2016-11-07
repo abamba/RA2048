@@ -16,7 +16,7 @@ public class Game extends PApplet {
 	
 	int[][] board = new int[4][4]; 
 
-	int pad = 10, block = 100, score = 0, dead = 0; 
+	int pad = 10, block = 100, score = 0, hiscore = 0, dead = 0; 
 	int length = pad*(board.length+1)+block*board.length; 
 	
 	public static void main(String[] args) {
@@ -67,7 +67,7 @@ public class Game extends PApplet {
 
     public void draw(){
     	background(241);
-
+    	
     	for(int i = 0; i < board.length; i++)
     	{
     		for(int j = 0; j < board.length; j++)
@@ -75,13 +75,13 @@ public class Game extends PApplet {
         		int x = 10+110*(i); /* On place les carrés sur un certain x */
         		int y = 25+110*(j); /* On place les carrés sur un certain u */
         		int c = block;		/* Taille du coté des carrés */
-
-        		float deltaG = (float)(197-228)/4096; //transition de couleurs de matheux pour faire des dégradés
-        		float deltaB = (float)(1-218)/4096; //différence entre couleur de début et de fin
+        		
+        		float deltaG = (float)(197-228)/12; //transition de couleurs de matheux pour faire des dégradés
+        		float deltaB = (float)(1-218)/12; //différence entre couleur de début et de fin
         		float r = 238;
         		float g = 228 + board[i][j]*deltaG;
         		float b = 218 + board[i][j]*deltaB;
-
+        		
         		noStroke();
         		int size = 40;
         		if(board[i][j]!=0){
@@ -118,6 +118,7 @@ public class Game extends PApplet {
 
     	int size = 30;
         texte("Score : "+ score,10,0,length,length,100,100,100,(size*2)/3,LEFT);
+        texte("High-Score : "+ hiscore,-10,0,length,length,100,100,100,(size*2)/3,RIGHT);
 
     }
 
@@ -209,21 +210,27 @@ public class Game extends PApplet {
     
     public void KeyMove(String s){
     	int i,j,k,sauve;
+    	int[][] tabtest = new int[4][4];
+    	for(i = 0; i == tabtest.length ; i++)
+    		for(j = 0; j == tabtest.length ; j++)
+    			tabtest[i][j]=0;
     	switch(s)
     	{
 	    	case "left":
 	    		for (k = 0; k<board.length;k++){
-		    		for(i = board.length-1; i > 0; i--){
+		    		for(i = 1; i < board.length; i++){
 						for (j = 0; j < 4; j++){
 							if(board[i-1][j]==0)
 							{
 								board[i-1][j]=board[i][j];
 								board[i][j]=0;
 							}
-							if(board[i-1][j]==board[i][j])
+							if(board[i-1][j]==board[i][j]&&tabtest[i-1][j]!=1&&tabtest[i][j]!=1)
 							{
 								board[i-1][j]=2*board[i-1][j];
 								board[i][j]=0;
+								tabtest[i-1][j]=1;
+								score = score+board[i-1][j];
 							}
 						}
 					}
@@ -231,64 +238,72 @@ public class Game extends PApplet {
 	    	break;
 	    	
 	    	case "up":
-	    		for (k = 0; k<board.length;k++){
-		    		for(j = board.length-1; j > 0; j--){
-						for (i = 0; i < 4; i++){
-							if(board[i][j-1]==0)
+	    		for (k = 0; k < board.length;k++){
+	    			for(j = 0; j < board.length-1; j++){
+  						for (i = 0; i < 4; i++){
+  							if(board[i][j]==0)
 							{
-								board[i][j-1]=board[i][j];
-								board[i][j]=0;
+								board[i][j]=board[i][j+1];
+								board[i][j+1]=0;
 							}
-							if(board[i][j-1]==board[i][j])
+  							if(board[i][j]==board[i][j+1]&&tabtest[i][j]!=1&&tabtest[i][j+1]!=1)
 							{
-								board[i][j-1]=2*board[i][j-1];
-								board[i][j]=0;
+								board[i][j]=2*board[i][j];
+								board[i][j+1]=0;
+								tabtest[i][j]=1;
+								score = score+board[i][j];
 							}
-						}
-					}
+  						}
+  					}
 	    		}
 	    	break;
 	    	
 	    	case "right":
 	    		for (k = 0; k<board.length;k++){
-		    		for(i = 0; i < board.length-1; i++){
+	    			for(i = board.length-1; i > 0; i--){
 						for (j = 0; j < 4; j++){
-							if(board[i+1][j]==0)
+							if(board[i][j]==0)
 							{
-								board[i+1][j]=board[i][j];
-								board[i][j]=0;
+								board[i][j]=board[i-1][j];
+								board[i-1][j]=0;
 							}
-							if(board[i+1][j]==board[i][j])
+							if(board[i][j]==board[i-1][j]&&tabtest[i][j]!=1&&tabtest[i-1][j]!=1)
 							{
-								board[i+1][j]=2*board[i+1][j];
-								board[i][j]=0;
+								board[i][j]=2*board[i][j];
+								board[i-1][j]=0;
+								tabtest[i][j]=1;
+								score = score+board[i][j];
 							}
 						}
-		    		}
+					}
 	    		}
     		break;
 	    	
 	    	case "down":
 	    		for (k = 0; k<board.length;k++){
-		    		for(j = 0; j < board.length-1; j++){
-							for (i = 0; i < 4; i++){
-								if(board[i][j+1]==0)
-								{
-									board[i][j+1]=board[i][j];
-									board[i][j]=0;
-								}
-								if(board[i][j+1]==board[i][j])
-								{
-									board[i][j+1]=2*board[i][j+1];
-									board[i][j]=0;
-								}
+	    			for(j = board.length-1; j > 0; j--){
+						for (i = 0; i < 4; i++){
+							if(board[i][j]==0)
+							{
+								board[i][j]=board[i][j-1];
+								board[i][j-1]=0;
+							}
+							if(board[i][j]==board[i][j-1]&&tabtest[i][j]!=1&&tabtest[i][j-1]!=1)
+							{
+								board[i][j]=2*board[i][j];
+								board[i][j-1]=0;
+								tabtest[i][j]=1;
+								score = score+board[i][j];
 							}
 						}
+					}
 	    		}
 	    	break;
     	}
     	spawn();
     	draw();
+    	if(hiscore<score)
+    		hiscore=score;
     }
     
     /* Hello this is dog */ /*everybody say hello to dog*/ /*shoot the dog*/ /* Revive the dog */ /*bury the dog*/ /* Revive the dog again */

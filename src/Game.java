@@ -8,12 +8,16 @@ public class Game extends PApplet {
 	
 		// VARIABLES
 	
+	public static Stack<Integer> undo = new Stack<Integer>();
 	public static Stack<Integer> redo = new Stack<Integer>();
+	public static Stack<Integer> scoreundo = new Stack<Integer>();
+	public static Stack<Integer> scoreredo = new Stack<Integer>();
 	public static int[][] board = new int[4][4];
 	int pad = 10, block = 100;
 	public static int score = 0, hiscore = 0, touractuel = 0;
 	public static boolean dead = false, win = false, winyet = false;
 	int length = pad*(board.length+1)+block*board.length;
+	boolean once = true;
 	
 		// SETUP
 	
@@ -197,19 +201,24 @@ public class Game extends PApplet {
     {
     	Controles cont = new Controles();
     	Misc m = new Misc();
+    	Undo u = new Undo();
     	Redo r = new Redo();
+    	u.addUndo(board);	// Ajout au Redo
     	board = cont.KeyMove(board, s);
-    	r.addRedo(board);	// Ajout au Redo
     	m.spawn();			// Nouvelle tile
     	draw();				// On dessine la grille
     	m.deadornay(board);	// Est-ce qu'on est mort
     	winner();			// Est-ce qu'on a win	
     	m.hiscore();		// Hi human!
     	m.console(board);	// Mode console
+    	r.clearRedo();
+    	
     }
 
     public void menu()
     {
+    	Undo u = new Undo();
+    	Redo r = new Redo();
     	int i;
     	int[][] button =
     		{
@@ -219,25 +228,37 @@ public class Game extends PApplet {
     		};
     	
     	for(i = 0; i < button.length; i++)
-    		if(survolmenu(button,i))
+    		if(survolmenu(button,i)>-1)
     		{
     			rectangle(button[i][0],button[i][1],button[i][2],button[i][3],button[i][4],button[i][5],button[i][6]);
+    			if(once&&survolmenu(button,i)==0)
+    			{
+    				once = false;
+    				board = u.actionUndo(board);
+    			}
+    			if(once&&survolmenu(button,i)==1)
+    			{
+    				once = false;
+    				board = r.actionRedo(board);
+    			}
     		}
     		else
     		{
     			rectangle(button[i][0],button[i][1],button[i][2],button[i][3],200,200,200);
     		}
+    	if(mousePressed==false)
+			once = true;
     	// Affichage du score/highscore
     	int size = 30;
         texte("Score : "+ score,10,0,length,length,100,100,100,(size*2)/3,LEFT);
         texte("HighScore : "+ hiscore,-10,0,length,length,100,100,100,(size*2)/3,RIGHT);
     }
 
-    public boolean survolmenu(int[][] tab, int bouton)
+    public int survolmenu(int[][] tab, int bouton)
     {
-    	boolean coucou = false;
+    	int coucou = -1;
     		if(mouseX>=tab[bouton][0]&&mouseX<=tab[bouton][0]+tab[bouton][2]&&mouseY>=tab[bouton][1]&&mouseY<=tab[bouton][1]+tab[bouton][3]&&mousePressed)
-    			coucou = true;
+    			coucou = bouton;
     	return coucou;
     }
     /* Hello this is dog */ /*everybody say hello to dog*/ /*shoot the dog*/ /* Revive the dog */ /*bury the dog*/ /* Revive the dog again */

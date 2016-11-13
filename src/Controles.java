@@ -126,5 +126,4 @@ public class Controles extends Game{
 		}
 		return board;
 	}
-
 }

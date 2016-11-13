@@ -106,7 +106,8 @@ public class Misc extends Game{
     	spawn();
     	spawn();
     }
-
+    
+  //TO BE DELETED
     public void Assign(String s, int size)
 	{
 		finK = size+2;

@@ -213,7 +213,7 @@ public class Game extends PApplet {
     	int i;
     	int[][] button =
     		{
-    			{120,2,30,21,100,100,100},
+    			{120,2,30,21,100,100,100}, //x, y, Taille x, Taille y, rgb
     			{155,2,30,21,100,100,100},
     			{190,2,30,21,100,100,100}
     		};

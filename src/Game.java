@@ -10,6 +10,8 @@ public class Game extends PApplet {
 	
 	public static Stack<Integer> undo = new Stack<Integer>();
 	public static Stack<Integer> redo = new Stack<Integer>();
+	public static Stack<Integer> scoreundo = new Stack<Integer>();
+	public static Stack<Integer> scoreredo = new Stack<Integer>();
 	public static int[][] board = new int[4][4];
 	int pad = 10, block = 100;
 	public static int score = 0, hiscore = 0, touractuel = 0;

@@ -4,6 +4,8 @@ public class Redo extends Game{
 	{
 		int i,j;
 		
+		scoreredo.add(score);
+		scoreredo.add(hiscore);
 		for(i = 0; i<4; i++)
 			for(j = 0; j<4; j++)
 			{
@@ -18,6 +20,10 @@ public class Redo extends Game{
 		int[][] retour = tab;
 			if(redo.size()>0)
 			{
+				hiscore = scoreredo.get(scoreredo.size()-1);
+				scoreredo.remove(scoreredo.size()-1);
+				score = scoreredo.get(scoreredo.size()-1);
+				scoreredo.remove(scoreredo.size()-1);
 				for(i = 3; i>=0; i--)
 					for(j = 3; j>=0; j--)
 					{

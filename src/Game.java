@@ -1,3 +1,5 @@
+import java.util.Stack;
+
 import processing.core.PApplet;
 
 //https://processing.org/tutorials/eclipse/
@@ -6,9 +8,10 @@ public class Game extends PApplet {
 	
 		// VARIABLES
 	
+	public static Stack<Integer> redo = new Stack<Integer>();
 	public static int[][] board = new int[4][4];
 	int pad = 10, block = 100;
-	public static int score = 0, hiscore = 0;
+	public static int score = 0, hiscore = 0, touractuel = 0;
 	public static boolean dead = false, win = false, winyet = false;
 	int length = pad*(board.length+1)+block*board.length;
 	
@@ -39,11 +42,7 @@ public class Game extends PApplet {
     	normalDraw();	// Dessin de la nouvelle board
     	dead();			// Dessin de la mort
     	winner();		// Dessin de la victoire
-    	// Affichage du score/highscore
-    	int size = 30;
-        texte("Score : "+ score,10,0,length,length,100,100,100,(size*2)/3,LEFT);
-        texte("High-Score : "+ hiscore,-10,0,length,length,100,100,100,(size*2)/3,RIGHT);
-
+    	menu();
     }
     // normalDraw va dessiner le board à chaque mouvement
     public void normalDraw(){
@@ -108,7 +107,7 @@ public class Game extends PApplet {
     		fill(color(255,135));
     		rect(0,0,length+20,length+20);
     		int size = 20;
-    		texte("En tant que personne géniale, vous avez gagné.",0,(length)/2-(size*2)/3,length,length,100,100,100,size,CENTER);
+    		texte("En tant que personne géniale, vous avez gagné en " + touractuel + "mouvements.",0,(length)/2-(size*2)/3,length,length,100,100,100,size,CENTER);
     		texte("Cliquez pour rejouer",0,(length)/2+size,length,length,100,100,100,(size*2)/3,CENTER);
     		texte("Appuyez sur entrée pour continuer",0,(length)/2+2*size,length,length,100,100,100,(size*2)/3,CENTER);
     	}
@@ -198,14 +197,48 @@ public class Game extends PApplet {
     {
     	Controles cont = new Controles();
     	Misc m = new Misc();
+    	Redo r = new Redo();
     	board = cont.KeyMove(board, s);
-    	m.spawn();		// Nouvelle tile
-    	draw();			// On dessine la grille
+    	r.addRedo(board);	// Ajout au Redo
+    	m.spawn();			// Nouvelle tile
+    	draw();				// On dessine la grille
     	m.deadornay(board);	// Est-ce qu'on est mort
-    	winner();
-    	m.hiscore();	// Hi human!
+    	winner();			// Est-ce qu'on a win	
+    	m.hiscore();		// Hi human!
     	m.console(board);	// Mode console
     }
 
+    public void menu()
+    {
+    	int i;
+    	int[][] button =
+    		{
+    			{120,2,30,21,100,100,100},
+    			{155,2,30,21,100,100,100},
+    			{190,2,30,21,100,100,100}
+    		};
+    	
+    	for(i = 0; i < button.length; i++)
+    		if(survolmenu(button,i))
+    		{
+    			rectangle(button[i][0],button[i][1],button[i][2],button[i][3],button[i][4],button[i][5],button[i][6]);
+    		}
+    		else
+    		{
+    			rectangle(button[i][0],button[i][1],button[i][2],button[i][3],200,200,200);
+    		}
+    	// Affichage du score/highscore
+    	int size = 30;
+        texte("Score : "+ score,10,0,length,length,100,100,100,(size*2)/3,LEFT);
+        texte("HighScore : "+ hiscore,-10,0,length,length,100,100,100,(size*2)/3,RIGHT);
+    }
+
+    public boolean survolmenu(int[][] tab, int bouton)
+    {
+    	boolean coucou = false;
+    		if(mouseX>=tab[bouton][0]&&mouseX<=tab[bouton][0]+tab[bouton][2]&&mouseY>=tab[bouton][1]&&mouseY<=tab[bouton][1]+tab[bouton][3]&&mousePressed)
+    			coucou = true;
+    	return coucou;
+    }
     /* Hello this is dog */ /*everybody say hello to dog*/ /*shoot the dog*/ /* Revive the dog */ /*bury the dog*/ /* Revive the dog again */
 }

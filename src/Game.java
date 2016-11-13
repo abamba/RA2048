@@ -1,53 +1,52 @@
 import processing.core.PApplet;
-import java.util.ArrayList;
+
 //https://processing.org/tutorials/eclipse/
 
 public class Game extends PApplet {
-	int[][] board = new int[4][4]; 
-	int pad = 10, block = 100, score = 0, hiscore = 0, dead = 0; 
-
-	int length = pad*(board.length+1)+block*board.length; 
 	
+		// VARIABLES
+	
+	public static int[][] board = new int[4][4];
+	int pad = 10, block = 100;
+	public static int score = 0, hiscore = 0;
+	public static boolean dead = false, win = false, winyet = false;
+	int length = pad*(board.length+1)+block*board.length;
+	
+		// SETUP
+	
+	// Main, truc pas mal important d'ailleurs
 	public static void main(String[] args) {
 		PApplet.main("Game"); 		
 	}		
-	//FUN STUFF
+
+	// Taille de la fenêtre
 	public void settings(){
 		size(length, length+15);
     }
-
-    public void setup(){ 
-    	size(length, length+15); //besoin des deux envie de pizza
+	// Font, et on lance le jeu
+    public void setup(){
+    	Misc m = new Misc();
     	textFont(createFont("Calibri", 38));
-    	restart();
+    	m.restart();
     }
     
-    public void restart(){
-    	board = new int[4][4]; 
-    	score = 0;
-    	dead = 0;
-    	spawn();
-    	spawn();
-    }
+    	// DESSIN
     
-    public void spawn(){
-    	//colonnes et lignes vides
-    	ArrayList<Integer> xpos = new ArrayList<Integer>(), ypos = new ArrayList<Integer>(); 
-    	for(int i = 0; i < board.length; i++)
-    		for(int j = 0; j < board.length; j++)
-    			if(board[i][j]==0){
-    				xpos.add(j);
-    				ypos.add(i);
-    			}
-    	
-    	//array index pour chopper les trucs vides et leur coller des machins 
-    	//chopper la taille des array et chopper des positions randoms dans cet array 
-    	int rand = (int)random(0, xpos.size()), y = ypos.get(rand), x = xpos.get(rand);
-    	board[y][x] = random(0,1) < 0.9? 2 : 4; //90% de chances de tomber sur un 2, sinon un 4
-    }
+    // Draw regroupe toutes les fonctions dessin
+    public void draw()
+    {
+    	background(241);// On colore notre joli fond
+    	normalDraw();	// Dessin de la nouvelle board
+    	dead();			// Dessin de la mort
+    	winner();		// Dessin de la victoire
+    	// Affichage du score/highscore
+    	int size = 30;
+        texte("Score : "+ score,10,0,length,length,100,100,100,(size*2)/3,LEFT);
+        texte("High-Score : "+ hiscore,-10,0,length,length,100,100,100,(size*2)/3,RIGHT);
 
-    public void draw(){
-    	background(241);
+    }
+    // normalDraw va dessiner le board à chaque mouvement
+    public void normalDraw(){
     	for(int i = 0; i < board.length; i++)
     	{
     		for(int j = 0; j < board.length; j++)
@@ -82,8 +81,12 @@ public class Game extends PApplet {
         		}
         	}
     	}
-    	//en cas de décès
-    	if(dead==1){ 
+    }
+    // dead va dessiner l'écran de mort
+    public void dead()
+    {
+    	Misc m = new Misc();
+    	if(dead){
     		fill(color(255,135));
     		rect(0,0,length+20,length+20);
     		int size = 20;
@@ -91,237 +94,118 @@ public class Game extends PApplet {
     		texte("Cliquez pour rejouer",0,(length)/2+size,length,length,100,100,100,(size*2)/3,CENTER);
     		texte("Score de fin : "+ score,0,(length)/2+2*size,length,length,100,100,100,(size*2)/3,CENTER);
     		if(mousePressed){
-    			restart();
+    			m.restart();
         	}
     	}
-    	int size = 30;
-        texte("Score : "+ score,10,0,length,length,100,100,100,(size*2)/3,LEFT);
-        texte("High-Score : "+ hiscore,-10,0,length,length,100,100,100,(size*2)/3,RIGHT);
     }
-
+    // winner va dessiner l'écran de victoire
+    public void winner()
+    {
+    	Misc m = new Misc();
+    	m.win();
+    	if(win&&winyet==false)
+    	{
+    		fill(color(255,135));
+    		rect(0,0,length+20,length+20);
+    		int size = 20;
+    		texte("En tant que personne géniale, vous avez gagné.",0,(length)/2-(size*2)/3,length,length,100,100,100,size,CENTER);
+    		texte("Cliquez pour rejouer",0,(length)/2+size,length,length,100,100,100,(size*2)/3,CENTER);
+    		texte("Appuyez sur entrée pour continuer",0,(length)/2+2*size,length,length,100,100,100,(size*2)/3,CENTER);
+    	}
+    }
+    // rectangle va nous aider à dessiner des rectangles (il regroupe en fait plusieurs méthodes)
     public void rectangle(float x, float y, float w, float h, int r, int g, int b)
     {
     	fill(r,g,b);
     	rect(x,y,w,h);
     }
-    
+    // texte va nous aider à faire des textes (il regroupe en fait plusieurs méthodes)
     public void texte(String t, float x, float y, float w, float h, int r, int g, int b, float s, int align){
     	fill(r,g,b);
     	textAlign(align);
     	textSize(s);
     	text(t,x,y,w,h);
     }
-    
-    public void keyPressed(){
-    	if(dead==0){
+
+    	// MOUVEMENTS
+
+    public void keyPressed()
+    {
+    	final int left = 37, up = 38, right = 39, down = 40, continuer = 10, restart = 32;	// Correspond aux codes ASCII des touches
+    	Misc m = new Misc();
+    	if(dead==false){
     		if(keyPressed){
-    			int test = 0;	// 1 = mouvement possible. 0 = mouvement impossible.
-    			int i, j;
+    			int deadornay = m.deadornay(board);
+    			String mov = "nope";
+    			
     			switch (keyCode)
     			{
-    				case 37:	// Left - On teste tous les mouvements de droite à gauche
-    					for(i = board.length-1; i > 0; i--){
-    						for (j = 0; j < 4; j++){
-    							if(board[i][j]==board[i-1][j]&&board[i][j]!=0)	// Si on peut fusionner deux cases
-    								test=1;
-    							if(board[i][j]!=0&&board[i-1][j]==0)	// Si on peut bouger car il y a une case vide
-    								test=1;
-    						}
-    					}
-    					if(test==1)
-    					{
-    						KeyMove("left");
-    					}
+    				case left:	// Left - On teste tous les mouvements de droite à gauche
+    					mov="left";
 					break;
 					
-    			  case 38:	// Up - On teste tous les mouvements de bas en haut
-  					for(j = board.length-1; j > 0; j--){
-						for (i = 0; i < 4; i++){
-							if(board[i][j]==board[i][j-1]&&board[i][j]!=0)	// Si on peut fusionner deux cases
-								test=1;
-							if(board[i][j]!=0&&board[i][j-1]==0)	// Si on peut bouger car il y a une case vide
-								test=1;
-						}
-					}
-					if(test==1)
-					{
-						KeyMove("up");
-					}
-    			    break;
+					case up:	// Up - On teste tous les mouvements de bas en haut
+						mov="up";
+					break;
     			    
-    			  case 39:	// Right - On teste tous les mouvements de gauche à droite
-  					for(i = 0; i < board.length-1; i++){
-						for (j = 0; j < 4; j++){
-							if(board[i][j]==board[i+1][j]&&board[i][j]!=0)	// Si on peut fusionner deux cases
-								test=1;
-							if(board[i][j]!=0&&board[i+1][j]==0)	// Si on peut bouger car il y a une case vide
-								test=1;
-						}
-					}
-					if(test==1)
-					{
-						KeyMove("right");
-					}
-    			    break;
+					case right:	// Right - On teste tous les mouvements de gauche à droite
+						mov="right";
+					break;
     			    
-    			  case 40:	// Down - On teste tous les mouvements de haut en bas
-    				  for(j = 0; j < board.length-1; j++){
-  						for (i = 0; i < 4; i++){
-  							if(board[i][j]==board[i][j+1]&&board[i][j]!=0)	// Si on peut fusionner deux cases
-  								test=1;
-  							if(board[i][j]!=0&&board[i][j+1]==0)	// Si on peut bouger car il y a une case vide
-  								test=1;
-  						}
-  					}
-  					if(test==1)
-  					{
-  						KeyMove("down");
-  					}
+					case down:	// Down - On teste tous les mouvements de haut en bas
+						mov="down";
       			    break;
-    			  default:
-    			    System.out.println("Dude what you're so buffed up right now");
+      			    
+					case continuer:	// On continue le jeu
+						mov="enter";
+					break;
+					
+					case restart:	// On restart la partie
+						mov="space";
+					break;
+    			  default:		// Le gars se plante de touche miskine
+    			    	mov="nope";
+    			}
+    			if(win==true&&winyet==false)
+				{
+    				if(mov=="enter")
+        			{
+    					winyet=true;
+    					win=false;
+        			}
+    				if(mov=="space")
+    				{
+    					m.restart();
+    				}
+				}
+    			else if(mov!="nope"&&mov!="enter"&&mov!="space")
+    			{
+   	    			if(deadornay!=0&&win!=true)
+	    			{
+	    				KeyMove(mov);
+	    			}
+	    			else if(deadornay==0)
+	    			{
+	    				dead = true;
+	    				dead();
+	    			}
     			}
     		}
-    	}
-    }
-    //déplacement
-    public void KeyMove(String s){
-    	int i,j,k;
-    	int[][] tabtest = new int[4][4];
-    	for(i = 0; i == tabtest.length ; i++)
-    		for(j = 0; j == tabtest.length ; j++)
-    			tabtest[i][j]=0;
-    	switch(s)
-    	{
-	    	case "left":
-	    		for (k = 0; k<board.length;k++){
-		    		for(i = 1; i < board.length; i++){
-						for (j = 0; j < 4; j++){
-							if(board[i-1][j]==0)
-							{
-								board[i-1][j]=board[i][j];
-								board[i][j]=0;
-							}
-							if(board[i-1][j]==board[i][j]&&tabtest[i-1][j]!=1&&tabtest[i][j]!=1)
-							{
-								board[i-1][j]=2*board[i-1][j];
-								board[i][j]=0;
-								tabtest[i-1][j]=1;
-								score = score+board[i-1][j];
-							}
-						}
-					}
-	    		}
-	    	break;
-	    	
-	    	case "up":
-	    		for (k = 0; k < board.length;k++){
-	    			for(j = 0; j < board.length-1; j++){
-  						for (i = 0; i < 4; i++){
-  							if(board[i][j]==0)
-							{
-								board[i][j]=board[i][j+1];
-								board[i][j+1]=0;
-							}
-  							if(board[i][j]==board[i][j+1]&&tabtest[i][j]!=1&&tabtest[i][j+1]!=1)
-							{
-								board[i][j]=2*board[i][j];
-								board[i][j+1]=0;
-								tabtest[i][j]=1;
-								score = score+board[i][j];
-							}
-  						}
-  					}
-	    		}
-	    	break;
-	    	
-	    	case "right":
-	    		for (k = 0; k<board.length;k++){
-	    			for(i = board.length-1; i > 0; i--){
-						for (j = 0; j < 4; j++){
-							if(board[i][j]==0)
-							{
-								board[i][j]=board[i-1][j];
-								board[i-1][j]=0;
-							}
-							if(board[i][j]==board[i-1][j]&&tabtest[i][j]!=1&&tabtest[i-1][j]!=1)
-							{
-								board[i][j]=2*board[i][j];
-								board[i-1][j]=0;
-								tabtest[i][j]=1;
-								score = score+board[i][j];
-							}
-						}
-					}
-	    		}
-    		break;
-	    	
-	    	case "down":
-	    		for (k = 0; k<board.length;k++){
-	    			for(j = board.length-1; j > 0; j--){
-						for (i = 0; i < 4; i++){
-							if(board[i][j]==0)
-							{
-								board[i][j]=board[i][j-1];
-								board[i][j-1]=0;
-							}
-							if(board[i][j]==board[i][j-1]&&tabtest[i][j]!=1&&tabtest[i][j-1]!=1)
-							{
-								board[i][j]=2*board[i][j];
-								board[i][j-1]=0;
-								tabtest[i][j]=1;
-								score = score+board[i][j];
-							}
-						}
-					}
-	    		}
-	    	break;
-    	}
-    	spawn();
-    	draw();
-    	deadornay();
-    	if(hiscore<score)
-    		hiscore=score;
+		}
     }
     
-    public void deadornay(){
-    	int test = 0;	// 1 = mouvement possible. 0 = mouvement impossible.
-		int i, j;
-			for(i = board.length-1; i > 0; i--){
-				for (j = 0; j < 4; j++){
-					if(board[i][j]==board[i-1][j]&&board[i][j]!=0)	// Si on peut fusionner deux cases
-						test=1;
-					if(board[i][j]!=0&&board[i-1][j]==0)	// Si on peut bouger car il y a une case vide
-						test=1;
-				}
-			}
-			for(j = board.length-1; j > 0; j--){
-			for (i = 0; i < 4; i++){
-				if(board[i][j]==board[i][j-1]&&board[i][j]!=0)	// Si on peut fusionner deux cases
-					test=1;
-				if(board[i][j]!=0&&board[i][j-1]==0)	// Si on peut bouger car il y a une case vide
-					test=1;
-			}
-		}
-			for(i = 0; i < board.length-1; i++){
-			for (j = 0; j < 4; j++){
-				if(board[i][j]==board[i+1][j]&&board[i][j]!=0)	// Si on peut fusionner deux cases
-					test=1;
-				if(board[i][j]!=0&&board[i+1][j]==0)	// Si on peut bouger car il y a une case vide
-					test=1;
-			}
-		}
-		  for(j = 0; j < board.length-1; j++){
-				for (i = 0; i < 4; i++){
-					if(board[i][j]==board[i][j+1]&&board[i][j]!=0)	// Si on peut fusionner deux cases
-						test=1;
-					if(board[i][j]!=0&&board[i][j+1]==0)	// Si on peut bouger car il y a une case vide
-						test=1;
-				}
-			}
-    	if(test==0){
-    		dead=1;
-    	}
+    public void KeyMove(String s)
+    {
+    	Controles cont = new Controles();
+    	Misc m = new Misc();
+    	board = cont.KeyMove(board, s);
+    	m.spawn();		// Nouvelle tile
+    	draw();			// On dessine la grille
+    	m.deadornay(board);	// Est-ce qu'on est mort
+    	winner();
+    	m.hiscore();	// Hi human!
+    	m.console(board);	// Mode console
     }
-  /* Hello this is dog */ /*everybody say hello to dog*/ /*shoot the dog*/ /* Revive the dog */ /*bury the dog*/ /* Revive the dog again */
+
+    /* Hello this is dog */ /*everybody say hello to dog*/ /*shoot the dog*/ /* Revive the dog */ /*bury the dog*/ /* Revive the dog again */
 }

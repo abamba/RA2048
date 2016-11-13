@@ -8,7 +8,7 @@ public class Game extends PApplet {
 	
 		// VARIABLES
 	
-	public static Stack<Integer> redo = new Stack<Integer>();
+	public static Stack<Integer> undo = new Stack<Integer>();
 	public static int[][] board = new int[4][4];
 	int pad = 10, block = 100;
 	public static int score = 0, hiscore = 0, touractuel = 0;
@@ -198,8 +198,8 @@ public class Game extends PApplet {
     {
     	Controles cont = new Controles();
     	Misc m = new Misc();
-    	Redo r = new Redo();
-    	r.addRedo(board);	// Ajout au Redo
+    	Undo u = new Undo();
+    	u.addUndo(board);	// Ajout au Redo
     	board = cont.KeyMove(board, s);
     	m.spawn();			// Nouvelle tile
     	draw();				// On dessine la grille
@@ -212,7 +212,7 @@ public class Game extends PApplet {
 
     public void menu()
     {
-    	Redo r = new Redo();
+    	Undo u = new Undo();
     	int i;
     	int[][] button =
     		{
@@ -228,7 +228,7 @@ public class Game extends PApplet {
     			if(once)
     			{
     				once = false;
-    				board = r.actionRedo(board);
+    				board = u.actionUndo(board);
     			}
     		}
     		else

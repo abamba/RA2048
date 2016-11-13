@@ -121,18 +121,16 @@ public class Controles extends Game{
 		return board;
 	}
 	
-	public int[][] rotate(int[][] tab, int n) {
+	public int[][] rotate(int[][] tab, int n)
+	{
 		int[][] temp = new int[4][4];
 		temp = tab; 
 		int i, j, k;
 		
-		for(k=0; k < n; k++){
-			for(i=0; i<4; i++){
-				for(j=0; j<4; j++){
+		for(k=0; k < n; k++)
+			for(i=0; i<4; i++)
+				for(j=0; j<4; j++)
 					tab[3-j][i] = temp[i][j];
-				}
-			}
-		}
 		return tab;
 	}
 }

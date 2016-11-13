@@ -14,6 +14,7 @@ public class Game extends PApplet {
 	public static int score = 0, hiscore = 0, touractuel = 0;
 	public static boolean dead = false, win = false, winyet = false;
 	int length = pad*(board.length+1)+block*board.length;
+	boolean once = true;
 	
 		// SETUP
 	
@@ -198,18 +199,20 @@ public class Game extends PApplet {
     	Controles cont = new Controles();
     	Misc m = new Misc();
     	Redo r = new Redo();
-    	board = cont.KeyMove(board, s);
     	r.addRedo(board);	// Ajout au Redo
+    	board = cont.KeyMove(board, s);
     	m.spawn();			// Nouvelle tile
     	draw();				// On dessine la grille
     	m.deadornay(board);	// Est-ce qu'on est mort
     	winner();			// Est-ce qu'on a win	
     	m.hiscore();		// Hi human!
     	m.console(board);	// Mode console
+    	
     }
 
     public void menu()
     {
+    	Redo r = new Redo();
     	int i;
     	int[][] button =
     		{
@@ -222,11 +225,18 @@ public class Game extends PApplet {
     		if(survolmenu(button,i))
     		{
     			rectangle(button[i][0],button[i][1],button[i][2],button[i][3],button[i][4],button[i][5],button[i][6]);
+    			if(once)
+    			{
+    				once = false;
+    				board = r.actionRedo(board);
+    			}
     		}
     		else
     		{
     			rectangle(button[i][0],button[i][1],button[i][2],button[i][3],200,200,200);
     		}
+    	if(mousePressed==false)
+			once = true;
     	// Affichage du score/highscore
     	int size = 30;
         texte("Score : "+ score,10,0,length,length,100,100,100,(size*2)/3,LEFT);

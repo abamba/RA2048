@@ -9,6 +9,7 @@ public class Game extends PApplet {
 		// VARIABLES
 	
 	public static Stack<Integer> undo = new Stack<Integer>();
+	public static Stack<Integer> redo = new Stack<Integer>();
 	public static int[][] board = new int[4][4];
 	int pad = 10, block = 100;
 	public static int score = 0, hiscore = 0, touractuel = 0;
@@ -199,6 +200,7 @@ public class Game extends PApplet {
     	Controles cont = new Controles();
     	Misc m = new Misc();
     	Undo u = new Undo();
+    	Redo r = new Redo();
     	u.addUndo(board);	// Ajout au Redo
     	board = cont.KeyMove(board, s);
     	m.spawn();			// Nouvelle tile
@@ -207,12 +209,14 @@ public class Game extends PApplet {
     	winner();			// Est-ce qu'on a win	
     	m.hiscore();		// Hi human!
     	m.console(board);	// Mode console
+    	r.clearRedo();
     	
     }
 
     public void menu()
     {
     	Undo u = new Undo();
+    	Redo r = new Redo();
     	int i;
     	int[][] button =
     		{
@@ -222,13 +226,18 @@ public class Game extends PApplet {
     		};
     	
     	for(i = 0; i < button.length; i++)
-    		if(survolmenu(button,i))
+    		if(survolmenu(button,i)>-1)
     		{
     			rectangle(button[i][0],button[i][1],button[i][2],button[i][3],button[i][4],button[i][5],button[i][6]);
-    			if(once)
+    			if(once&&survolmenu(button,i)==0)
     			{
     				once = false;
     				board = u.actionUndo(board);
+    			}
+    			if(once&&survolmenu(button,i)==1)
+    			{
+    				once = false;
+    				board = r.actionRedo(board);
     			}
     		}
     		else
@@ -243,11 +252,11 @@ public class Game extends PApplet {
         texte("HighScore : "+ hiscore,-10,0,length,length,100,100,100,(size*2)/3,RIGHT);
     }
 
-    public boolean survolmenu(int[][] tab, int bouton)
+    public int survolmenu(int[][] tab, int bouton)
     {
-    	boolean coucou = false;
+    	int coucou = -1;
     		if(mouseX>=tab[bouton][0]&&mouseX<=tab[bouton][0]+tab[bouton][2]&&mouseY>=tab[bouton][1]&&mouseY<=tab[bouton][1]+tab[bouton][3]&&mousePressed)
-    			coucou = true;
+    			coucou = bouton;
     	return coucou;
     }
     /* Hello this is dog */ /*everybody say hello to dog*/ /*shoot the dog*/ /* Revive the dog */ /*bury the dog*/ /* Revive the dog again */

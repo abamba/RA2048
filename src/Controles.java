@@ -78,17 +78,10 @@ public class Controles extends Game{
 		if(s=="left"||s=="right")	// Left ou Right
 		{
 			for (k = 0; k<finK;k++)
-			{
 	    		for(i = debI; i < finI; i=i+addI)
-	    		{
 					for (j = debJ; j < finJ; j=j+addJ)
 					{
 						tabtest[i][j]=0;
-						if(board[i+deltaI][j+deltaJ]==0)
-						{
-							board[i+deltaI][j+deltaJ]=board[i][j];
-							board[i][j]=0;
-						}
 						if(board[i+deltaI][j+deltaJ]==board[i][j]&&tabtest[i+deltaI][j+deltaJ]!=1&&tabtest[i][j]!=1)
 						{
 							board[i+deltaI][j+deltaJ]=2*board[i+deltaI][j+deltaJ];
@@ -96,23 +89,19 @@ public class Controles extends Game{
 							tabtest[i+deltaI][j+deltaJ]=1;
 							score = score+board[i+deltaI][j+deltaJ];
 						}
+						if(board[i+deltaI][j+deltaJ]==0)
+						{
+							board[i+deltaI][j+deltaJ]=board[i][j];
+							board[i][j]=0;
+						}
 					}
-	    		}
-    		}
 		}
 		else	// Up ou Down
 		{
 			for (k = 0; k<finK;k++)
-			{
 				for (j = debJ; j < finJ; j++)
-				{
 					for(i = debI; i < finI; i++)
 					{
-						if(board[i+deltaI][j+deltaJ]==0)
-						{
-							board[i+deltaI][j+deltaJ]=board[i][j];
-							board[i][j]=0;
-						}
 						if(board[i+deltaI][j+deltaJ]==board[i][j]&&tabtest[i+deltaI][j+deltaJ]!=1&&tabtest[i][j]!=1)
 						{
 							board[i+deltaI][j+deltaJ]=2*board[i+deltaI][j+deltaJ];
@@ -120,9 +109,12 @@ public class Controles extends Game{
 							tabtest[i+deltaI][j+deltaJ]=1;
 							score = score+board[i+deltaI][j+deltaJ];
 						}
+						if(board[i+deltaI][j+deltaJ]==0)
+						{
+							board[i+deltaI][j+deltaJ]=board[i][j];
+							board[i][j]=0;
+						}
 					}
-				}
-			}
 		}
 		return board;
 	}

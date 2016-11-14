@@ -2,19 +2,11 @@ public class Controles extends Game{
 	int deltaI, deltaJ, debI, finI, debJ, finJ, finK, addI, addJ;
 	
 	public int[][] KeyMove(int[][] tab, String s){
-		
 		// Variables
-		int j;
 		int[][] tabmod = tab;
 		Assign(s);
-		
 		tabmod = Move(s, tab);
-		// On rend le tableau modifié
-		
-		System.out.println("Fin");
-		for(j=0; j<4; j++)
-			System.out.println("|" + tabmod[0][j] + "|" +  tabmod[1][j] + "|" +  tabmod[2][j] + "|"+  tabmod[3][j] + "|");
-		
+		// On rend le tableau modifié		
 		return tabmod;
 	}
 	
@@ -47,22 +39,31 @@ public class Controles extends Game{
 		int i, j, k;
 		int rot = Assign(s); 
 		tab = rotate(tab, rot); 
-		
-		for(k=0; k<4; k++)
+		//si case libre à droite > va à droite
+		for(k=0; k<4; k++) 
 			for(i=0; i<3; i++)
 				for(j=0; j<4; j++)
 					if(tab[i+1][j]==0){
 						tab[i+1][j]=tab[i][j];
 						tab[i][j]=0;
 					}
+		//si fusion possible
 		for(k=0; k<4; k++)
+			for(i=3; i>0; i--)
+				for(j=0; j<4; j++)
+					if(tab[i-1][j]==tab[i][j]){
+						tab[i][j]=2*tab[i][j];
+						tab[i-1][j]=0;
+					}
+		for(k=0; k<4; k++) 
 			for(i=0; i<3; i++)
 				for(j=0; j<4; j++)
-					if(tab[i+1][j]==tab[i][j]){
-						tab[i+1][j]=2*tab[i+1][j];
+					if(tab[i+1][j]==0){
+						tab[i+1][j]=tab[i][j];
 						tab[i][j]=0;
 					}
-		tab=rotate(tab, 4-rot);
+		
+		tab=rotate(tab, 4-rot); //pos initiale 4 rot est rot totale donc moins ce qu'on a déjà rotate
 		return tab;
 	}
 	//to make things simple

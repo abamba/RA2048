@@ -7,41 +7,36 @@ public class Misc extends Game{
     public int deadornay(int[][] board)
     {
     	int test = 0;	// 1 = mouvement possible. 0 = mouvement impossible.
-		for(l = 0; l<2; l++)
-		{
-			if(l==0)
-			{
-				Assign("left",board.length);
-			}
-			else
-			{
-				Assign("right",board.length);
-			}
-			for (k = 0; k<finK;k++)
-	    		for(i = debI; i < finI; i=i+addI)
-					for (j = debJ; j < finJ; j=j+addJ)
-						if(board[i+deltaI][j+deltaJ]==0||board[i+deltaI][j+deltaJ]==board[i][j])
-							test = 1;
-		}
-		for(l = 0; l<2; l++)
-		{
-			if(l==0)
-			{
-				Assign("up",board.length);
-			}
-			else
-			{
-				Assign("down",board.length);
-			}
-			for (k = 0; k<finK;k++)
-				for (j = debJ; j < finJ; j++)
-					for(i = debI; i < finI; i++)
-						if(board[i+deltaI][j+deltaJ]==0||board[i+deltaI][j+deltaJ]==board[i][j])
-							test = 1;
-		}
+    	
+    	test = deadtest("left",board);
+    	test = deadtest("up",board);
+    	test = deadtest("right",board);
+    	test = deadtest("down",board);
     	return test;
     }
 
+    private int deadtest(String s,int[][] tab)
+    {
+    	Controles c = new Controles();
+    	int i,j,k,retour = 0;
+    	int rot = c.Assign(s);
+    	tab = c.rotate(tab, rot);
+    	
+    	for(k=0; k<4; k++) 
+			for(i=0; i<3; i++)
+				for(j=0; j<4; j++)
+					if(tab[i+1][j]==0){
+						retour=1;
+					}
+    	for(i=3; i>0; i--)
+			for(j=0; j<4; j++)
+				if(tab[i-1][j]==tab[i][j]){
+					retour=1;
+				}
+    	
+    	return retour;
+    }
+    
     public void hiscore()
     {
     	if(score>hiscore)
@@ -92,12 +87,6 @@ public class Misc extends Game{
     }
     
     public void restart(){
-    	//TEST pour si jamais on se sent chauds
-    	/*System.out.println("Choisir la taille du jeu : "); 
-    	Scanner taille = new Scanner(System.in); 
-    	int in = taille.nextInt(); // Scans the next token of the input as an int.
-    	texte("Taille du 2048 : ",0,(length)/2+2*size,length,length,100,100,100,(size*2)/3,CENTER);
-    	int[][] board = new int[in][in]; */
     	board = new int[4][4]; 
     	score = 0;
     	dead = false;
@@ -106,56 +95,5 @@ public class Misc extends Game{
     	spawn();
     	spawn();
     }
-    
-  //TO BE DELETED
-    public void Assign(String s, int size)
-	{
-		finK = size+2;
-		switch(s)
-		{
-			case "left":
-				deltaI = -1;
-				deltaJ = 0;
-				debI = 1;
-				finI = size;
-				debJ = 0;
-				finJ = size;
-				addI = 1;
-				addJ = 1;
-			break;
-			
-			case "up":
-				deltaI = 0;
-				deltaJ = -1;
-				debI = 0;
-				finI = size;
-				debJ = 1;
-				finJ = size;
-				addI = 1;
-				addJ = -1;
-			break;
-			
-			case "right":
-				deltaI = 1;
-				deltaJ = 0;
-				debI = 0;
-				finI = size-1;
-				debJ = 0;
-				finJ = size;
-				addI = 1;
-				addJ = 1;
-			break;
-			
-			case "down":
-				deltaI = 0;
-				deltaJ = 1;
-				debI = 0;
-				finI = size;
-				debJ = 0;
-				finJ = size-1;
-				addI = 1;
-				addJ = 1;
-			break;
-		}
-	}
+
 }

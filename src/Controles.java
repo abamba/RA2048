@@ -47,7 +47,6 @@ public class Controles extends Game{
 						tab[i][j]=0;
 					}
 		//si fusion possible
-		for(k=0; k<4; k++)
 			for(i=3; i>0; i--)
 				for(j=0; j<4; j++)
 					if(tab[i-1][j]==tab[i][j]){
@@ -55,6 +54,7 @@ public class Controles extends Game{
 						tab[i-1][j]=0;
 						score = score + tab[i][j];
 					}
+		//si case libre à droite > va à droite
 		for(k=0; k<4; k++) 
 			for(i=0; i<3; i++)
 				for(j=0; j<4; j++)

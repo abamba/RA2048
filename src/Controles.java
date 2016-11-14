@@ -1,5 +1,4 @@
 public class Controles extends Game{
-	int deltaI, deltaJ, debI, finI, debJ, finJ, finK, addI, addJ;
 	
 	public int[][] KeyMove(int[][] tab, String s){
 		// Variables
@@ -54,6 +53,7 @@ public class Controles extends Game{
 					if(tab[i-1][j]==tab[i][j]){
 						tab[i][j]=2*tab[i][j];
 						tab[i-1][j]=0;
+						score = score + tab[i][j];
 					}
 		for(k=0; k<4; k++) 
 			for(i=0; i<3; i++)

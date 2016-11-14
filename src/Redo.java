@@ -11,7 +11,6 @@ public class Redo extends Game{
 			{
 				redo.add(tab[i][j]);
 			}
-		System.out.println("coucou " + redo);
 	}
 	
 	public int[][] actionRedo(int[][] tab)

@@ -6,7 +6,6 @@ public class Undo extends Game{
 		int[][] retour = new int[4][4];
 		scoreundo.add(score);
 		scoreundo.add(hiscore);
-		System.out.println(scoreundo);
 		for(i = 0; i<4; i++)
 			for(j = 0; j<4; j++)
 			{

@@ -203,27 +203,31 @@ public class Game extends PApplet {
     	Misc m = new Misc();
     	Undo u = new Undo();
     	Redo r = new Redo();
-    	u.addUndo(board);	// Ajout au Redo
+    	if(m.deadtest(s,board)==1)
+    	{
+		u.addUndo(board);	// Ajout au Redo
     	board = cont.KeyMove(board, s);
-    	m.spawn();			// Nouvelle tile
-    	draw();				// On dessine la grille
-    	m.deadornay(board);	// Est-ce qu'on est mort
+		m.spawn();			// Nouvelle tile
+		draw();				// On dessine la grille
     	winner();			// Est-ce qu'on a win	
     	m.hiscore();		// Hi human!
     	m.console(board);	// Mode console
     	r.clearRedo();
-    	
+    	}
+    	m.deadornay(board);	// Est-ce qu'on est mort
     }
 
     public void menu()
     {
     	Undo u = new Undo();
     	Redo r = new Redo();
+    	Misc m = new Misc();
     	int i;
     	int[][] button =
     		{
     			{120,2,30,21,100,100,100}, //x, y, Taille x, Taille y, rgb
-    			{155,2,30,21,100,100,100}
+    			{155,2,30,21,100,100,100},
+    			{190,2,30,21,100,100,100}
     		};
     	
     	for(i = 0; i < button.length; i++)
@@ -240,6 +244,11 @@ public class Game extends PApplet {
     				once = false;
     				board = r.actionRedo(board);
     			}
+    			if(once&&survolmenu(button,i)==2)
+    			{
+    				once = false;
+    				m.restart();
+    			}
     		}
     		else
     		{
@@ -251,6 +260,9 @@ public class Game extends PApplet {
     	int size = 30;
         texte("Score : "+ score,10,0,length,length,100,100,100,(size*2)/3,LEFT);
         texte("HighScore : "+ hiscore,-10,0,length,length,100,100,100,(size*2)/3,RIGHT);
+        texte("Un",button[0][0],button[0][1],button[0][2],50,100,100,100,(size*2)/3,CENTER);
+        texte("Re",button[1][0],button[0][1],button[0][2],50,100,100,100,(size*2)/3,CENTER);
+        texte("Rt",button[2][0],button[0][1],button[0][2],50,100,100,100,(size*2)/3,CENTER);
     }
 
     public int survolmenu(int[][] tab, int bouton)

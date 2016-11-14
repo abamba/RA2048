@@ -16,9 +16,11 @@ public class Redo extends Game{
 	public int[][] actionRedo(int[][] tab)
 	{
 		int i,j;
+		Undo u = new Undo();
 		int[][] retour = tab;
 			if(redo.size()>0)
 			{
+				u.addUndo(tab);
 				hiscore = scoreredo.get(scoreredo.size()-1);
 				scoreredo.remove(scoreredo.size()-1);
 				score = scoreredo.get(scoreredo.size()-1);

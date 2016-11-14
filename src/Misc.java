@@ -15,7 +15,7 @@ public class Misc extends Game{
     	return test;
     }
 
-    private int deadtest(String s,int[][] tab)
+    public int deadtest(String s,int[][] tab)
     {
     	Controles c = new Controles();
     	int i,j,k,retour = 0;

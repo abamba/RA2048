@@ -62,7 +62,7 @@ public class Controles extends Game{
 		tab=rotate(tab, 4-rot);
 		return tab;
 	}
-	
+	//to make things simple
 	public int[][] rotate(int[][] tab, int n)
 	{
 		int[][] temp = new int[4][4];

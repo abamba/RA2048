@@ -45,16 +45,16 @@ public class Controles extends Game{
 		int rot = Assign(s); 
 		tab = rotate(tab, rot); 
 		
-		for(k=0; k<4; k++)
-			for(i=0; i<4; i++)
-				for(j=0; j<4; j++)
+		for(k=0; k<3; k++)
+			for(i=0; i<3; i++)
+				for(j=0; j<3; j++)
 					if(tab[i+1][j]==0){
 						tab[i+1][j]=tab[i][j];
 						tab[i][j]=0;
 					}
-		for(k=0; k<4; k++)
-			for(i=0; i<4; i++)
-				for(j=0; j<4; j++)
+		for(k=0; k<3; k++)
+			for(i=0; i<3; i++)
+				for(j=0; j<3; j++)
 					if(tab[i+1][j]==tab[i][j]){
 						tab[i+1][j]=2*tab[i+1][j];
 						tab[i][j]=0;
@@ -70,8 +70,8 @@ public class Controles extends Game{
 		int i, j, k;
 		
 		for(k=0; k < n; k++)
-			for(i=0; i<4; i++)
-				for(j=0; j<4; j++)
+			for(i=0; i<3; i++)
+				for(j=0; j<3; j++)
 					tab[3-j][i] = temp[i][j];
 		return tab;
 	}
